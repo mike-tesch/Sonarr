@@ -39,6 +39,8 @@ namespace NzbDrone.Core.Tv
 
         public Series Series { get; set; }
 
+        public bool Watched { get; set; }
+
         public bool HasFile
         {
             get { return EpisodeFileId > 0; }

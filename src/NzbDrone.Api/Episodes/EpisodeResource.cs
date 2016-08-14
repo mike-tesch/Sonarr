@@ -30,6 +30,7 @@ namespace NzbDrone.Api.Episodes
         public bool UnverifiedSceneNumbering { get; set; }
         public string SeriesTitle { get; set; }
         public SeriesResource Series { get; set; }
+        public bool Watched { get; set; }
 
         //Hiding this so people don't think its usable (only used to set the initial state)
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
@@ -54,6 +55,7 @@ namespace NzbDrone.Api.Episodes
                 AirDate = model.AirDate,
                 AirDateUtc = model.AirDateUtc,
                 Overview = model.Overview,
+                Watched = model.Watched,
                 //EpisodeFile
 
                 HasFile = model.HasFile,

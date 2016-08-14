@@ -2,6 +2,7 @@ var vent = require('vent');
 var Marionette = require('marionette');
 var Backgrid = require('backgrid');
 var ToggleCell = require('../../Cells/EpisodeMonitoredCell');
+var ToggleWatchedCell = require('../../Cells/EpisodeWatchedCell');
 var EpisodeTitleCell = require('../../Cells/EpisodeTitleCell');
 var RelativeDateCell = require('../../Cells/RelativeDateCell');
 var EpisodeStatusCell = require('../../Cells/EpisodeStatusCell');
@@ -44,6 +45,15 @@ module.exports = Marionette.Layout.extend({
             trueClass  : 'icon-sonarr-monitored',
             falseClass : 'icon-sonarr-unmonitored',
             tooltip    : 'Toggle monitored status',
+            sortable   : false
+        },
+		{
+            name       : 'watched',
+            label      : '',
+            cell       : ToggleWatchedCell,
+            trueClass  : 'icon-sonarr-watched',
+            falseClass : 'icon-sonarr-unwatched',
+            tooltip    : 'Toggle watched status',
             sortable   : false
         },
         {
@@ -243,6 +253,34 @@ module.exports = Marionette.Layout.extend({
 
         this.templateHelpers.showingEpisodes = this.showingEpisodes;
         this.render();
+    },
+	
+	_episodeWatchedToggled : function(options) {
+        var model = options.model;
+        var shiftKey = options.shiftKey;
+
+        if (!this.episodeCollection.get(model.get('id'))) {
+            return;
+        }
+
+        if (!shiftKey) {
+            return;
+        }
+
+        var lastToggled = this.episodeCollection.lastToggled;
+
+        if (!lastToggled) {
+            return;
+        }
+
+        var currentIndex = this.episodeCollection.indexOf(model);
+        var lastIndex = this.episodeCollection.indexOf(lastToggled);
+
+        var low = Math.min(currentIndex, lastIndex);
+        var high = Math.max(currentIndex, lastIndex);
+        var range = _.range(low + 1, high);
+
+        this.episodeCollection.lastToggled = model;
     },
 
     _episodeMonitoredToggled : function(options) {

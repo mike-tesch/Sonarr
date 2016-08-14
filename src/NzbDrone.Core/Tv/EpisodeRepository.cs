@@ -28,6 +28,7 @@ namespace NzbDrone.Core.Tv
         Episode FindEpisodeBySceneNumbering(int seriesId, int sceneAbsoluteEpisodeNumber);
         List<Episode> EpisodesBetweenDates(DateTime startDate, DateTime endDate, bool includeUnmonitored);
         void SetMonitoredFlat(Episode episode, bool monitored);
+        void SetWatchedFlat(Episode episode, bool watched);
         void SetMonitoredBySeason(int seriesId, int seasonNumber, bool monitored);
         void SetFileId(int episodeId, int fileId);
     }
@@ -165,6 +166,12 @@ namespace NzbDrone.Core.Tv
             }
 
             return query.ToList();
+        }
+
+        public void SetWatchedFlat(Episode episode, bool watched)
+        {
+            episode.Watched = watched;
+            SetFields(episode, p => p.Watched);
         }
 
         public void SetMonitoredFlat(Episode episode, bool monitored)

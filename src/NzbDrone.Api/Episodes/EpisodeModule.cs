@@ -15,7 +15,7 @@ namespace NzbDrone.Api.Episodes
             : base(episodeService, seriesService, qualityUpgradableSpecification, signalRBroadcaster)
         {
             GetResourceAll = GetEpisodes;
-            UpdateResource = SetMonitored;
+            UpdateResource = UpdateEpisode;
         }
 
         private List<EpisodeResource> GetEpisodes()
@@ -32,9 +32,10 @@ namespace NzbDrone.Api.Episodes
             return resources;
         }
 
-        private void SetMonitored(EpisodeResource episodeResource)
+        private void UpdateEpisode(EpisodeResource episodeResource)
         {
             _episodeService.SetEpisodeMonitored(episodeResource.Id, episodeResource.Monitored);
+            _episodeService.SetEpisodeWatched(episodeResource.Id, episodeResource.Watched);
         }
     }
 }
